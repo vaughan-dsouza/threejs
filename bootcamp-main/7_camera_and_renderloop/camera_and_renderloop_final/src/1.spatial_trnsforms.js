@@ -5,29 +5,32 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 const scene = new THREE.Scene();
 
 // add objects to the scene
-// const verticesOfCube = [
-// 	- 1, - 1, - 1, 1, - 1, - 1, 1, 1, - 1, - 1, 1, - 1,
-// 	- 1, - 1, 1, 1, - 1, 1, 1, 1, 1, - 1, 1, 1,
-// ];
-// const indicesOfFaces = [
-// 	2, 1, 0, 0, 3, 2,
-// 	0, 4, 7, 7, 3, 0,
-// 	0, 1, 5, 5, 4, 0,
-// 	1, 2, 6, 6, 5, 1,
-// 	2, 3, 7, 7, 6, 2,
-// 	4, 5, 6, 6, 7, 4,
-// ];
-// const radius = 7;  
-
-// const detail = 2; 
-// const cubeGeometry = new THREE.PolyhedronGeometry(
-// 	verticesOfCube, indicesOfFaces, radius, detail );
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 const cubeMaterial = new THREE.MeshBasicMaterial({ color: "red" , wireframe: true });
 
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cubeMesh.position.y = 0;
+cubeMesh.position.y = -1;
+// const cubeMesh1 = new THREE.Mesh(cubeGeometry, cubeMaterial);
+// cubeMesh1.position.x = 0;
+// const cubeMesh2 = new THREE.Mesh(cubeGeometry, cubeMaterial);
+// cubeMesh2.position.x = 2;
+// cubeMesh.scale.x = 2;
+// cubeMesh.scale.set(2,2,1);
+// scene.add(cubeMesh);
+const group = new THREE.Group();
+// group.add(cubeMesh);
+// group.add(cubeMesh1);
+// group.add(cubeMesh2);
+// group.scale.y = 2;
 scene.add(cubeMesh);
+
+cubeMesh.rotation.reorder('YXZ'); // should be called before rotation
+
+// cubeMesh.rotation.x = Math.PI * 0.25;
+cubeMesh.rotation.y = THREE.MathUtils.degToRad(90);
+cubeMesh.rotation.x = THREE.MathUtils.degToRad(45);
+
+console.log(window.devicePixelRatio);
 
 // initialize the camera
 const camera = new THREE.PerspectiveCamera(
@@ -37,8 +40,19 @@ const camera = new THREE.PerspectiveCamera(
   200
 );
 
+const axesHelper = new THREE.AxesHelper(2);
+cubeMesh.add(axesHelper);
+// const aspectRatio = window.innerWidth / window.innerHeight;
+// const camera = new THREE.OrthographicCamera(
+//   -1 * aspectRatio,
+//   1 * aspectRatio,
+//   1,
+//   -1,
+//   0.1,
+//   200
+// );
+
 camera.position.z = 10;
-camera.position.y = 2;
 console.log(cubeMesh.position.distanceTo(camera.position))
 
 // initialize the renderer;
@@ -61,21 +75,8 @@ window.addEventListener('resize', () =>{
   renderer.setSize(window.innerWidth, window.innerHeight);
 })
 
-// animate the scene initialize clock 
-const clock = new THREE.Clock();
-let previousTime = 0;
-
 // render the scene
 const renderloop = () => {
-  cubeMesh.rotateY += THREE.MathUtils.degToRad(1);
-  const currrentTime = clock.getElapsedTime()
-  const delta = currrentTime - previousTime;
-  previousTime = currrentTime;
-  
-  Math.sin(currrentTime)
-  cubeMesh.scale.x = Math.sin(currrentTime)*2 + 2;
-
-  cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 120;
   controls.update(); 
   renderer.render(scene, camera);
   window.requestAnimationFrame(renderloop);
