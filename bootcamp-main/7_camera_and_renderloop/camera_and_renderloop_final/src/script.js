@@ -22,7 +22,8 @@ const scene = new THREE.Scene();
 // const detail = 2; 
 // const cubeGeometry = new THREE.PolyhedronGeometry(
 // 	verticesOfCube, indicesOfFaces, radius, detail );
-const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+// const cubeGeometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
+const cubeGeometry = new THREE.SphereGeometry(1, 16, 16, 8, 8, 8);
 const cubeMaterial = new THREE.MeshBasicMaterial({ color: "red" , wireframe: true });
 
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
@@ -67,16 +68,16 @@ let previousTime = 0;
 
 // render the scene
 const renderloop = () => {
-  cubeMesh.rotateY += THREE.MathUtils.degToRad(1);
-  const currrentTime = clock.getElapsedTime()
-  const delta = currrentTime - previousTime;
-  previousTime = currrentTime;
+  // cubeMesh.rotateY += THREE.MathUtils.degToRad(1);
+  // const currrentTime = clock.getElapsedTime()
+  // const delta = currrentTime - previousTime;
+  // previousTime = currrentTime;
   
-  Math.sin(currrentTime)
-  cubeMesh.scale.x = Math.sin(currrentTime)*2 + 2;
+  // Math.sin(currrentTime)
+  // cubeMesh.scale.x = Math.sin(currrentTime)*2 + 2;
 
-  cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 120;
-  controls.update(); 
+  // cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 120;
+  // controls.update(); 
   renderer.render(scene, camera);
   window.requestAnimationFrame(renderloop);
 };
